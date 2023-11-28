@@ -1,1 +1,2 @@
-require("tbreug")
+require('plugins')
+require('opts')
