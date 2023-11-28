@@ -1,5 +1,19 @@
 #!/bin/sh -e
 
+######################
+# LINKING WALLPAPERS #
+######################
+echo "[+] Linking wallpapers to /usr/share/backgrounds"
+ln -s ./backgrounds /usr/share/backgrounds > /dev/null
+
+###################
+# SETTING UP SDDM #
+###################
+echo "[+] Setting up SDDM config"
+rm /usr/share/sddm/themes/sugar-candy/theme.conf /usr/lib/sddm/sddm.conf.d/default.conf > /dev/null
+ln -s ./.config/sddm/theme.conf /usr/share/sddm/themes/sugar-candy/theme.conf > /dev/null
+ln -s ./.config/sddm/default.conf /usr/lib/sddm/sddm.conf.d/default.conf > /dev/null
+
 ##################
 # SETTING UP ZSH #
 ##################
@@ -23,10 +37,10 @@ ln -s ./.emacs.d/init.el ~/.emacs.d/init.el > /dev/null
 # SETTING UP KITTY #
 ####################
 echo "[+] Linking config file for kitty (kitty.conf)"
-ln -s ./.config/kitty ~/.config/kitty
+ln -s ./.config/kitty ~/.config/kitty > /dev/null
 
 ####################
 # SETTING UP QTILE #
 ####################
 echo "[+] Linking config file for qtile (config.py)"
-ln -s ./.config/qtile ~/.config/qtile
+ln -s ./.config/qtile ~/.config/qtile > /dev/null
