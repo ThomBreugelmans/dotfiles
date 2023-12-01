@@ -1,16 +1,6 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-(ensure-packages-installed
- 'dap-mode
- 'rustic
- 'rust-mode
- 'lsp-mode
- 'kanagawa-theme
- 'autothemer
- 'projectile
- )
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -21,7 +11,7 @@
    '("9031991af43f3a15e2b1fab62b5a0a985c46f24e596385f05bbf87770347d8ed" "34cf742adcc87ab605e073fe8ace28fe58a5bce993b884f0c35182ceaa4fde07" default))
  '(kanagawa-theme-comment-italic t)
  '(package-selected-packages
-   '(dap-mode exec-path-from-shell rustic rust-mode lsp-mode kanagawa-theme autothemer))
+   '(counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode kanagawa-theme autothemer))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -38,6 +28,21 @@
   kept-new-versions 20   ; how many of the newest versions to keep
   kept-old-versions 5    ; and how many of the old
   )
+
+(use-package rust-mode
+  :ensure)
+(use-package kanagawa-theme
+  :ensure)
+(use-package autothemer
+  :ensure)
+
+(use-package counsel
+  :ensure
+  :config
+  (counsel-mode +1)
+  (ivy-mode +1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) "))
 
 ;; LSP setup
 (use-package lsp-mode
@@ -186,6 +191,13 @@
 
 )
 
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(use-package projectile
+  :ensure
+  :init
+  (projectile-mode +1)
+  (setq projectile-project-search-path '("~/work/"))
+  :bind (:map projectile-mode-map
+	      ("C-c p" . projectile-command-map)))
+
+(use-package magit
+  :ensure)
