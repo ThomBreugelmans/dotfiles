@@ -11,7 +11,7 @@
    '("9031991af43f3a15e2b1fab62b5a0a985c46f24e596385f05bbf87770347d8ed" "34cf742adcc87ab605e073fe8ace28fe58a5bce993b884f0c35182ceaa4fde07" default))
  '(kanagawa-theme-comment-italic t)
  '(package-selected-packages
-   '(counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode kanagawa-theme autothemer))
+   '(company-web web-beautify company-web-slim company-web-jade company-web-html multi-web-mode lsp-ivy python-mode markdown-preview-eww markdown-mode magit counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode kanagawa-theme autothemer))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -36,6 +36,12 @@
 (use-package autothemer
   :ensure)
 
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode))
+  :init (setq markdown-command "/usr/bin/multimarkdown"))
+
 (use-package counsel
   :ensure
   :config
@@ -45,6 +51,12 @@
   (setq ivy-count-format "(%d/%d) "))
 
 ;; LSP setup
+(use-package lsp-ivy
+  :ensure)
+
+(use-package lsp-treemacs
+  :ensure)
+
 (use-package lsp-mode
   :ensure
   :commands lsp
@@ -72,6 +84,7 @@
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-doc-enable nil))
+
 
 ;; Company setup
 (use-package company
@@ -130,14 +143,17 @@
 (use-package rustic
   :ensure
   :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
+              ("M-j" . lsp-treemacs-symbols)
+              ("M-?" . lsp-treemacs-references)
+	      ("M-!" . lsp-treemacs-implementations)
               ("C-c C-c l" . flycheck-list-errors)
               ("C-c C-c a" . lsp-execute-code-action)
               ("C-c C-c r" . lsp-rename)
               ("C-c C-c q" . lsp-workspace-restart)
               ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
+              ("C-c C-c s" . lsp-rust-analyzer-status)
+	      ("C-c C-c t" . lsp-inlay-hints-mode)
+	      ("C-c C-c S" . lsp-ivy-workspace-symbol))
   :config
   ;; uncomment for less flashiness
   ;; (setq lsp-eldoc-hook nil)
@@ -201,3 +217,39 @@
 
 (use-package magit
   :ensure)
+
+;; setting up multi web mode
+(use-package multi-web-mode
+  :ensure
+  :config
+  (setq mweb-default-major-mode 'html-mode)
+  (setq mweb-tags
+	'((js-mode "<script[^>]*>" "</script>")
+	  (css-mode "<style[^>]*>" "</style>")))
+  (setq mweb-filename-extensions '("htm" "html" "phtml"))
+  (multi-web-global-mode 1))
+
+(use-package company-web
+  :ensure)
+
+(use-package web-beautify
+  :ensure
+  :config
+  (eval-after-load 'multi-web-global-mode
+  '(add-hook 'mweb-mode-hook
+	     (lambda ()
+               (add-hook 'before-save-hook 'web-beautify-html-buffer t t)))))
+
+;; remove the suspend keybind when in graphical mode as it
+;; frequently 'closes' emacs and (at least with a tiling wm)
+;; and you cannot reopen it
+(global-unset-key (kbd "C-z"))
+
+(global-set-key (kbd "C-z C-z") 'my-suspend-frame)
+
+(defun my-suspend-frame ()
+  "In a GUI environment, do nothing; otherwise `suspend-frame'."
+  (interactive)
+  (if (display-graphic-p)
+      (message "suspend-frame disabled for graphical displays.")
+    (suspend-frame)))
