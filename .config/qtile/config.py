@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import bar, layout, widget
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -131,8 +131,12 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-screens = [
-    Screen(
+def connected_screens():
+    output = [l for l in subprocess.check_output(["xrandr"]).decode("utf-8").splitlines()]
+    return [l.split()[0] for l in output if " connected " in l]
+
+def create_screen():
+    return Screen(
         wallpaper="/usr/share/backgrounds/hackerman.jpg",
         wallpaper_mode="fill",
         top=bar.Bar(
@@ -165,13 +169,16 @@ screens = [
             
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
+        )
+    )
+        
+screens = [
+    create_screen() for _ in connected_screens()
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
-    ),
-]
+    ]
 
 # Drag floating layouts.
 mouse = [
@@ -209,10 +216,18 @@ auto_minimize = True
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
 
+@hook.subscribe.screen_change
+def restart_on_randr(qtile, ev):
+    qtile.cmd_reload_config()
+
 # Autostart
-#@hooks.subscribe.startup
-#def autostart():
-#    subprocess.Popen(["picom"])
+@hook.subscribe.startup
+def autostart():
+    processes = [
+        # ['firefox', '--option', ...],
+    ]
+    for p in processes: 
+        subprocess.Popen(p)
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
