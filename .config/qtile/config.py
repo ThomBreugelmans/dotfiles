@@ -225,6 +225,7 @@ def restart_on_randr(qtile, ev):
 def autostart():
     processes = [
         # ['firefox', '--option', ...],
+        ['autorandr', '--change'],
     ]
     for p in processes: 
         subprocess.Popen(p)
