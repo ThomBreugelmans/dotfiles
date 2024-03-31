@@ -1,27 +1,27 @@
 # Dotfiles
-my current dotfiles for my setup, consists of my qtile setup, kitty, emacs, eww and neovim (not really used anymore).
+my current dotfiles for my setup, consists of my hyprland setup, kitty, emacs.
 
 ## Looks
 ...
 
 ## Requirements
 these following packages should be ensured they are installed:
-- `qtile`
-- `xsecurelock`
+- `hyprland`
+- `hyprlock`
+- `waybar`
+- `pywal`
+- `imagemagick`
 - `sddm`
 - `sddm-sugar-candy-git`
 - `kitty`
 - `emacs`
-- `neovim`
-- `eww (elkowars wacky widgets)`
-- `cargo`
 
 ## Installation
 there is a script called `install.sh` that will link all the required files to their respective locations (that way they stay up to date when this repo is updated).
 
 ## Tasklist
-- [ ] wallpaper setup hyprland
-  - [ ] configure pywal to generate color palette depending on wallpaper
+- [x] wallpaper setup hyprland
+  - [x] configure pywal to generate color palette depending on wallpaper
 
 - [ ] wlogout setup hyprland
   - [ ] wlogout ricing
@@ -42,7 +42,7 @@ there is a script called `install.sh` that will link all the required files to t
       - [ ] bluetooth
       - [ ] notifications(? maybe a separate menu)
 
-- [ ] hyprlock setup
+- [x] hyprlock setup
 
 - [ ] wofi styling (depends on application launcher of waybar)
       
@@ -62,6 +62,7 @@ there is a script called `install.sh` that will link all the required files to t
       - [ ] waybar
       - [ ] wofi
       - [ ] pywal
+	    - [ ] imagemagick
       - [ ] hyprlock
       - [ ] wlogout
     - [ ] emacs
