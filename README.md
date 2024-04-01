@@ -18,6 +18,7 @@ these following packages should be ensured they are installed:
 - `kitty`
 - `emacs`
 - `thunar`
+- `darkman`
 
 ## Installation
 there is a script called `install.sh` that will link all the required files to their respective locations (that way they stay up to date when this repo is updated).
@@ -62,6 +63,9 @@ there is a script called `install.sh` that will link all the required files to t
 - [ ] Dunst
 - [ ] polkit
 - [ ] thunar
+- [ ] darkman
+  - [ ] dark mode
+  - [ ] light mode
       
 - [ ] dotfiles autoinstaller
   - [ ] general install script with ability to select systems to install
