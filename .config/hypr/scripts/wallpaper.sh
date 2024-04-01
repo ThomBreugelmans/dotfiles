@@ -5,7 +5,7 @@
 # - [ ] have this script (partly) manage color schemes of other applications
 
 current_wallpaper="$HOME/.cache/current_wallpaper"
-blurred="$HOME/.cache/blurred_wallpaper"
+blurred="$HOME/.cache/blurred_wallpaper.png"
 
 if [[ ! $1 == "init" ]]; then
     # select wallpaper by pywal
