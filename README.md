@@ -13,8 +13,11 @@ these following packages should be ensured they are installed:
 - `imagemagick`
 - `sddm`
 - `sddm-sugar-candy-git`
+- `dunst`
+- `polkit-gnome`
 - `kitty`
 - `emacs`
+- `thunar`
 
 ## Installation
 there is a script called `install.sh` that will link all the required files to their respective locations (that way they stay up to date when this repo is updated).
@@ -23,8 +26,8 @@ there is a script called `install.sh` that will link all the required files to t
 - [x] wallpaper setup hyprland
   - [x] configure pywal to generate color palette depending on wallpaper
 
-- [ ] wlogout setup hyprland
-  - [ ] wlogout ricing
+- [x] wlogout setup hyprland
+  - [x] wlogout ricing
 
 - [ ] status bar setup using waybar
   - [ ] workspace notifier
@@ -47,13 +50,18 @@ there is a script called `install.sh` that will link all the required files to t
 - [ ] wofi styling (depends on application launcher of waybar)
       
 - [ ] color palette auto change setup
-  - [ ] emacs
-  - [ ] kitty/terminal
-  - [ ] hyprland
+  - [x] emacs
+  - [x] kitty/terminal
+  - [x] hyprland
   - [ ] waybar
-  - [ ] wlogout
-  - [ ] hyprlock
+  - [x] wlogout
+  - [x] hyprlock
   - [ ] application launcher (wofi or something else depending on waybar app startup thing)
+  
+- [ ] GTK
+- [ ] Dunst
+- [ ] polkit
+- [ ] thunar
       
 - [ ] dotfiles autoinstaller
   - [ ] general install script with ability to select systems to install
