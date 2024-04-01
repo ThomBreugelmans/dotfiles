@@ -6,19 +6,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(kanagawa))
- '(custom-safe-themes
-   '("9031991af43f3a15e2b1fab62b5a0a985c46f24e596385f05bbf87770347d8ed" "34cf742adcc87ab605e073fe8ace28fe58a5bce993b884f0c35182ceaa4fde07" default))
- '(kanagawa-theme-comment-italic t)
  '(package-selected-packages
-   '(company-web web-beautify company-web-slim company-web-jade company-web-html multi-web-mode lsp-ivy python-mode markdown-preview-eww markdown-mode magit counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode kanagawa-theme autothemer))
- '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Recursive" :foundry "UKWN" :weight regular :height 113 :width normal)))))
+   '(ewal-spacemacs-themes ewal which-key rainbow-delimiters elpy blacken company-web web-beautify company-web-slim company-web-jade company-web-html multi-web-mode lsp-ivy python-mode markdown-preview-eww markdown-mode magit counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode kanagawa-theme autothemer))
+ '(tool-bar-mode nil)
+ '(menu-bar-mode nil))
 
 ;; set backups to .emacs.d folder
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -28,6 +19,48 @@
   kept-new-versions 20   ; how many of the newest versions to keep
   kept-old-versions 5    ; and how many of the old
   )
+(setq inhibit-startup-message t)
+(column-number-mode)
+(global-display-line-numbers-mode t)
+(dolist (mode '(org-mode-hook
+	       term-mode-hook
+	       shell-mode-hook
+	       eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+(set-frame-parameter nil 'alpha-background 70)
+
+(add-to-list 'default-frame-alist '(alpha-background . 70))
+
+(use-package ewal
+  :init (setq ewal-use-built-in-always-p nil
+              ewal-use-built-in-on-failure-p t
+              ewal-built-in-palette "sexy-material"))
+(use-package ewal-spacemacs-themes
+  :init (progn
+          (setq spacemacs-theme-underline-parens t
+                my:rice:font (font-spec
+                              :family "FiraCode Nerd Font Mono"
+                              :weight 'semi-bold
+                              :size 11.0))
+          (show-paren-mode +1)
+          (global-hl-line-mode)
+          (set-frame-font my:rice:font nil t)
+          (add-to-list  'default-frame-alist
+                        `(font . ,(font-xlfd-name my:rice:font))))
+  :config (progn
+            (load-theme 'ewal-spacemacs-modern t)
+            (enable-theme 'ewal-spacemacs-modern)))
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package which-key
+  :diminish which-key-mode
+  :config
+  (which-key-mode +1)
+  (setq which-key-idle-delay 1)
+  (setq which-key-popup-type 'minibuffer))
 
 (use-package rust-mode
   :ensure)
@@ -172,6 +205,20 @@
   (when buffer-file-name
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+
+;; Python setup
+(use-package blacken
+  :ensure)
+
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable)
+  
+  ;; Enable Flycheck
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode)))
 
 ;; debugging setup
 (use-package exec-path-from-shell
