@@ -14,7 +14,7 @@ these following packages should be ensured they are installed:
 - `sddm`
 - `sddm-sugar-candy-git`
 - `dunst`
-- `polkit-gnome`
+- `kde-polkit-agent`
 - `kitty`
 - `emacs`
 - `thunar`
@@ -62,6 +62,7 @@ there is a script called `install.sh` that will link all the required files to t
 - [ ] GTK
 - [ ] Dunst
 - [ ] polkit
+  - [ ] Qt Theming
 - [ ] thunar
 - [ ] darkman
   - [ ] dark mode
@@ -77,6 +78,7 @@ there is a script called `install.sh` that will link all the required files to t
 	    - [ ] imagemagick
       - [ ] hyprlock
       - [ ] wlogout
+	  - [ ] kde-polkit-agent
     - [ ] emacs
     - [ ] kitty
     - [ ] sddm
