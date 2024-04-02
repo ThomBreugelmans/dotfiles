@@ -34,16 +34,20 @@ there is a script called `install.sh` that will link all the required files to t
   - [ ] workspace notifier
   - [ ] app launcher
   - [ ] current window name
-  - [ ] date and time
-  - [ ] network information
-    - [ ] network configuration dropdown menu
+  - [x] date and time
+  - [x] network information
   - [ ] cpu/memory information
-  - [ ] battery status
+  - [x] battery status
+  - [ ] brightness
   - [ ] media information (sound, bluetooth, ?)
     - [ ] media control center
       - [ ] music
       - [ ] sound
+	  - [ ] brightness
       - [ ] bluetooth
+	  - [ ] network
+	    - [ ] network name
+	    - [ ] network configuration/connection
       - [ ] notifications(? maybe a separate menu)
 
 - [x] hyprlock setup
