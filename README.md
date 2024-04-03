@@ -16,6 +16,9 @@ these following packages should be ensured they are installed:
 - `dunst`
 - `polkit-gnome`
 - `kitty`
+- `zsh`
+  - `powerlevel10k`
+  - `zoxide`
 - `emacs`
 - `thunar`
 - `darkman`

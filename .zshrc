@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zaw)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -106,9 +106,13 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source /home/hannibal/.oh-my-zsh/plugins/zaw/zaw.zsh
-bindkey '^r' zaw-history
-bindkey '^b' zaw-git-branches
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Created by `pipx` on 2024-03-04 12:20:21
+export PATH="$PATH:/home/hannibal/.local/bin"
+
+# To initialize zoxide, add this to your configuration (usually ~/.zshrc):
+#
+eval "$(zoxide init zsh)"
