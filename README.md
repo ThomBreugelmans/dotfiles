@@ -54,6 +54,7 @@ there is a script called `install.sh` that will link all the required files to t
       - [ ] notifications(? maybe a separate menu)
 
 - [x] hyprlock setup
+  - [ ] add keys for reboot, shutdown and sleep etc.
 
 - [ ] wofi styling (depends on application launcher of waybar)
       
