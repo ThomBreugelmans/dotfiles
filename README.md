@@ -22,6 +22,7 @@ these following packages should be ensured they are installed:
 - `emacs`
 - `thunar`
 - `darkman`
+- `veracrypt`
 
 ## Installation
 there is a script called `install.sh` that will link all the required files to their respective locations (that way they stay up to date when this repo is updated).
