@@ -23,6 +23,7 @@ these following packages should be ensured they are installed:
 - `thunar`
 - `darkman`
 - `veracrypt`
+- `nvidia stuff`
 
 ## Installation
 there is a script called `install.sh` that will link all the required files to their respective locations (that way they stay up to date when this repo is updated).
@@ -58,6 +59,8 @@ there is a script called `install.sh` that will link all the required files to t
   - [ ] add keys for reboot, shutdown and sleep etc.
 
 - [ ] wofi styling (depends on application launcher of waybar)
+
+- [ ] nvidia, mainly prime and offloading
       
 - [ ] color palette auto change setup
   - [x] emacs
@@ -92,3 +95,5 @@ there is a script called `install.sh` that will link all the required files to t
     - [ ] kitty
     - [ ] sddm
       - [ ] sddm-sugar-candy
+  - [ ] nvidia
+  - [ ] other graphics drivers e.g. for vms
