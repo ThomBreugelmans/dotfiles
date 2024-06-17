@@ -5,10 +5,11 @@
     "margin-bottom": 0,
     "margin-right": 10,
     "spacing": 5, // Gaps between modules (4px)
-    "modules-left": [ "battery","bluetooth","temperature","idle_inhibitor"],
-    "modules-center": ["wlr/workspaces", "custom/recorder"],
-    "modules-right": ["backlight","tray", "pulseaudio", "network",  "clock"],
-    "wlr/workspaces": {
+    "modules-left": [ "hyprland/workspaces", "hyprland/window" ],
+    "modules-center": [ "clock" ],
+    "modules-right": [ "backlight", "pulseaudio", "bluetooth", "network", "battery" ],
+    
+    "hyprland/workspaces": {
       "format": "{icon}",
       "format-icons": {
         "1": "",
@@ -16,47 +17,40 @@
         "3": "",
         "4": "",
         "5": "",
+        "6": "",
+        "7": "",
+        "8": "",
+        "9": "",
         "urgent": "",
 
         "active": "",
-        "default": ""
+        "default": "",
+	"empty": "",
       },
-    },
-  "idle_inhibitor": {
-      "format": "{icon}",
-      "format-icons": {
-          "activated": "",
-          "deactivated": ""
+      "persistent-workspaces": {
+        "*": 9,
       },
-  },
-   "temperature": {
-      "interval": 30,
-      "thermal-zone": 2,
-      "critical-threshold": 70,
-      "format-critical": "{temperatureC}°C ",
-      "format": "{temperatureC}°C "
+      "all-outputs": true,
+      "move-to-monitor": true,
     },
     "hyprland/window": {
-        "format": "{}"
-    },
-    "tray": {
-        "icon-size": 13,
-        "tooltip": false,
-        "spacing": 10
+        "format": "{}",
+	"max-length": 200,
+	"seperate-outputs": true,
     },
 
-    "custom/recorder": {
-      "format": "",
-      "return-type": "json",
-      "interval": 1,
-      "exec": "echo '{\"class\": \"recording\"}'",
-      "exec-if": "pgrep wf-recorder"
+    "cpu": {
+    	"interval": 10,
+        "format": " {usage}%",
+    },
+
+    "memory": {
+    	"interval": 10,
+	"format": " {used}GiB|{total}GiB",
     },
     
     "clock": {
-        "format": "<span color='#bf616a'> </span>{:%I:%M %p}",
-        "format-alt": "<span color='#bf616a'> </span>{:%a %b %d}",
-        "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "{:%a %b %d - %I:%M %p}",
     },
 
     "backlight": {
@@ -67,10 +61,10 @@
     },
     "network": {
         "interval": 5,
-        "format-wifi": "直 {signalStrength}%",
+        "format-wifi": "直 {essid} ({bandwidthUpBytes} {bandwidthDownBytes})",
         "format-ethernet": " wired",
         "format-disconnected": "睊",
-        "on-click": "nmcli radio wifi off"
+        "on-click": "", // todo show applet
     },
 
     "pulseaudio": {
@@ -90,7 +84,7 @@
     },
 
     "bluetooth": {
-        "interval": 60,
+        "interval": 30,
         "format": " {status}",
         "on-click": "bluetoothctl power off",
     },
