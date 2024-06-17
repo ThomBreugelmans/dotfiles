@@ -16,6 +16,7 @@ these following packages should be ensured they are installed:
 - `dunst`
 - `polkit-gnome`
 - `kitty`
+- `terminator`
 - `zsh`
   - `powerlevel10k`
   - `zoxide`
@@ -36,14 +37,12 @@ there is a script called `install.sh` that will link all the required files to t
   - [x] wlogout ricing
 
 - [ ] status bar setup using waybar
-  - [ ] workspace notifier
-  - [ ] app launcher
-  - [ ] current window name
+  - [x] workspace notifier
+  - [x] current window name
   - [x] date and time
   - [x] network information
-  - [ ] cpu/memory information
   - [x] battery status
-  - [ ] brightness
+  - [x] brightness
   - [ ] media information (sound, bluetooth, ?)
     - [ ] media control center
       - [ ] music
@@ -54,9 +53,20 @@ there is a script called `install.sh` that will link all the required files to t
 	    - [ ] network name
 	    - [ ] network configuration/connection
       - [ ] notifications(? maybe a separate menu)
+- [ ] custom configure minimal statusbar in ewww
+  - [ ] minimal icon module for active stuff (network, sound, battery, bluetooth)
+  - [ ] whole ass dropdown media control center for more specific config (little like windows 11)
+  - [ ] notification center
+  - [ ] timer
+  - [ ] applets (within media center) for bluetooth and wifi
+  - [ ] darkmode
+  - [ ] calendar
+  - [ ] google calendar integration
+  - [ ] agenda/trello integration
+  - [ ] keyboard shortcuts to show/hide the different menus (as well as buttons)
 
 - [x] hyprlock setup
-  - [ ] add keys for reboot, shutdown and sleep etc.
+  - [x] add keys for reboot, shutdown and sleep etc.
 
 - [ ] wofi styling (depends on application launcher of waybar)
 
@@ -84,7 +94,7 @@ there is a script called `install.sh` that will link all the required files to t
   - [ ] general install script with ability to select systems to install
   - [ ] per configuration/application install script which also installs dependencies
     - [ ] hyprland
-      - [ ] waybar
+      - [x] waybar
       - [ ] wofi
       - [ ] pywal
 	    - [ ] imagemagick
@@ -93,6 +103,7 @@ there is a script called `install.sh` that will link all the required files to t
 	  - [ ] polkit-gnome
     - [ ] emacs
     - [ ] kitty
+	- [ ] terminator
     - [ ] sddm
       - [ ] sddm-sugar-candy
   - [ ] nvidia
