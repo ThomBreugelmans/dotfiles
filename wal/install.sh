@@ -8,7 +8,7 @@ echo "[INFO] Getting components for: Pywal"
 
 declare -A TO_INSTALL
 TO_INSTALL=(
-    ["pacman"]='python-pywal'
+    ["pacman"]='python-pywal imagemagick'
     ["apt"]='' # apt does not have it in the package manager, we need to install using pip3
 )
 

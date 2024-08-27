@@ -91,20 +91,20 @@ there is a script called `install.sh` that will link all the required files to t
   - [ ] light mode
       
 - [ ] dotfiles autoinstaller
-  - [ ] general install script with ability to select systems to install
-  - [ ] per configuration/application install script which also installs dependencies
-    - [ ] hyprland
+  - [x] general install script with ability to select systems to install
+  - [x] per configuration/application install script which also installs dependencies
+    - [x] hyprland
       - [x] waybar
-      - [ ] wofi
-      - [ ] pywal
-	    - [ ] imagemagick
-      - [ ] hyprlock
-      - [ ] wlogout
-	  - [ ] polkit-gnome
-    - [ ] emacs
-    - [ ] kitty
-	- [ ] terminator
-    - [ ] sddm
-      - [ ] sddm-sugar-candy
+      - [x] wofi
+      - [x] pywal
+	    - [x] imagemagick
+      - [x] hyprlock
+      - [x] wlogout
+	  - [x] polkit-gnome
+    - [x] emacs
+    - [x] kitty
+	- [x] terminator
+    - [x] sddm
+      - [x] sddm-sugar-candy
   - [ ] nvidia
   - [ ] other graphics drivers e.g. for vms

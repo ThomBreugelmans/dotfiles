@@ -8,8 +8,8 @@ echo "[INFO] Getting components for: Hypr"
 
 declare -A TO_INSTALL
 TO_INSTALL=(
-    ["pacman"]='hyprland hyprlock hypridle wl-clipboard grimshot'
-    ["apt"]='hyprland hyprlock hypridle wl-clipboard grimshot'
+    ["pacman"]='hyprland hyprlock hypridle wl-clipboard grimshot swww'
+    ["apt"]='hyprland hyprlock hypridle wl-clipboard grimshot swww'
 )
 
 # Add dependencies to package list
