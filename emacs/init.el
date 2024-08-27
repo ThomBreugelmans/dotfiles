@@ -64,8 +64,6 @@
 
 (use-package rust-mode
   :ensure)
-(use-package kanagawa-theme
-  :ensure)
 (use-package autothemer
   :ensure)
 
