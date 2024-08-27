@@ -8,8 +8,8 @@ echo "[INFO] Getting components for: Emacs"
 
 declare -A TO_INSTALL
 TO_INSTALL=(
-    ["pacman"]='emacs'
-    ["apt"]='emacs'
+    ["pacman"]='emacs ttf-firacode-nerd'
+    ["apt"]='emacs' # has no repository package for the nerdfont so will need to be done manually
 )
 
 # Add dependencies to package list
