@@ -1,72 +1,62 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
-if [[ $HOME_DIR -eq "" ]]; then
-    $HOME_DIR=$HOME
+# GET SCRIPT SOURCE DIR
+SOURCE=${BASH_SOURCE[0]}
+while [ -L "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+  SOURCE=$(readlink "$SOURCE")
+  [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+
+
+# DETECTING PACKAGE MANAGER
+echo "[INFO] Attempting to detect package manager"
+INSTALL_COMMAND=""
+if command -v pacman &> /dev/null; then
+    INSTALL_COMMAND="$(which pacman) -S -q --noconfirm"
+fi
+if command -v apt &> /dev/null; then
+    INSTALL_COMMAND="$(which apt) install"
 fi
 
-if [[ "$(which paru)" -eq "" ]]; then
-    echo "[!] Paru the AUR helper is not installed, which is required for this script!"
-    exit 1;
+if [[ $INSTALL_COMMAND == "" ]]; then
+    echo "[!] Could not detect package manager, exiting..."
+    exit 1
 fi
-if [[ "$(which pacman)" -eq "" ]]; then
-    echo "[!] This script is meant for Arch (or at least pacman) based distributions!"
-    exit 1;
-fi
+echo "[DEBUG] Selected the following install command: \`$INSTALL_COMMAND\`"
 
-sudo --validate
+# SELECT CONFIGURATIONS AND THEIR DEPENDENCIES TO INSTALL
+echo -e "\nPlease select all packages you want to install:"
 
-######################
-# LINKING WALLPAPERS #
-######################
-echo "[+] Linking wallpapers to /usr/share/backgrounds"
-sudo cp ./backgrounds /usr/share/
+CONFIGS=($(basename -a $DIR/*/))
+for i in $(seq 0 $((${#CONFIGS[@]} - 1))); do
+    echo "$(($i + 1))) ${CONFIGS[$i]}"
+done
+CHOICES=()
+read -p "Choice (you can select multiple, e.g. 1-5,7,9): " CHOICE
+IFS=',' read -ra CHOICE_SPLIT <<< "$CHOICE"
+for C in "${CHOICE_SPLIT[@]}"; do
+    if [[ $C == *"-"* ]]; then
+	IFS='-' read -ra RANGE <<< "$C"
+	CHOICES+=($(seq ${RANGE[0]} ${RANGE[1]}))
+    else
+	CHOICES+=("$C")
+    fi
+done
 
-###################
-# SETTING UP SDDM #
-###################
-echo "[+] Installing SDDM and prerequisites..."
-paru -S -q --noconfirm sddm sddm-sugar-candy-git
-echo "[+] Setting up SDDM config"
-sudo rm /usr/share/sddm/themes/sugar-candy/theme.conf /usr/lib/sddm/sddm.conf.d/default.conf > /dev/null
-sudo cp ./.config/sddm/theme.conf /usr/share/sddm/themes/sugar-candy/theme.conf
-sudo cp ./.config/sddm/default.conf /usr/lib/sddm/sddm.conf.d/default.conf
+# SOURCE EACH DEPENDENCIES INSTALL SCRIPTS
+CONFIGURE="true"
 
-##################
-# SETTING UP ZSH #
-##################
-echo "[+] Installing ZSH..."
-sudo pacman -S -q zsh --noconfirm
-echo "[+] Downloading and installing ZSH requirements..."
-# Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# Powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME_DIR/.oh-my-zsh/custom}/themes/powerlevel10k
-echo "[+] Linking config file for ZSH (.zshrc)"
-cp ./.zshrc $HOME_DIR/.zshrc
+SUDO_ASKPASS=/bin/false sudo -A whoami &> /dev/null || (echo "Installing packages requires sudo rights, please input password:"; sudo --validate)
+#sudo --validate
 
-####################
-# SETTING UP EMACS #
-####################
-echo "[+] Installing emacs..."
-sudo pacman -S -q emacs --noconfirm
-echo "[+] Linking config file for emacs (init.el)"
-# setting up
-mkdir $HOME_DIR/.emacs.d/ > /dev/null
-sudo cp ./.emacs.d/init.el $HOME_DIR/.emacs.d/init.el
+declare -a PACKAGES
+PACKAGES=()
+for choice in "${CHOICES[@]}"; do
+    source $DIR/${CONFIGS[$((choice - 1))]}/install.sh
+done
 
-####################
-# SETTING UP KITTY #
-####################
-echo "[+] Installing kitty..."
-sudo pacman -S -q kitty --noconfirm
-echo "[+] Linking config file for kitty (kitty.conf)"
-sudo cp ./.config/kitty $HOME_DIR/.config/
-
-####################
-# SETTING UP QTILE #
-####################
-echo "[+] Installing qtile and prerequisites..."
-sudo pacman -S -q qtile autorandr arandr shotgun hacksaw xclip --noconfirm
-echo "[+] Linking config file for qtile (config.py)"
-sudo cp ./.config/qtile $HOME_DIR/.config/
+# INSTALLING PACKAGES
+sudo $INSTALL_COMMAND ${PACKAGES[@]}
 

@@ -9,7 +9,7 @@ blurred="$HOME/.cache/blurred_wallpaper.png"
 
 if [[ ! $1 == "init" ]]; then
     # select wallpaper by pywal
-    wal -q -i /usr/share/wallpapers/ -n -s -t
+    wal -q -i ~/Pictures/wallpapers -n -s -t
     # obtain the values (mainly the wallpaper chosen)
     source "$HOME/.cache/wal/colors.sh"
     

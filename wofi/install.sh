@@ -4,12 +4,12 @@ if [[ -z $DIR ]]; then echo "[ERROR] This script should not be run by itself! Ex
 if [[ -z $INSTALL_COMMAND ]]; then echo "[ERROR] This script should not be run by itself! Exiting..."; exit 1; fi;
 if [ -v $PACKAGES ] || [[ "${#PACKAGES[@]}" != "0" ]]; then :; else echo "[ERROR] This script should not be run by itself! Exiting..."; exit 1; fi;
 
-echo "[INFO] Getting components for: Pywal"
+echo "[INFO] Getting components for: Wofi"
 
 declare -A TO_INSTALL
 TO_INSTALL=(
-    ["pacman"]='python-pywal'
-    ["apt"]='' # apt does not have it in the package manager, we need to install using pip3
+    ["pacman"]='wofi'
+    ["apt"]='wofi'
 )
 
 # Add dependencies to package list
@@ -23,5 +23,5 @@ done
 
 if [[ $CONFIGURE == "true" ]]; then
     # Copy configs over
-    cp -r $DIR/wal ~/.config
+    :
 fi
