@@ -21,3 +21,5 @@ for key in "${!TO_INSTALL[@]}"; do
     fi
 done
 
+# Install configs
+cp -r $DIR/terminator ~/.config/
