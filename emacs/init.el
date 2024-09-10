@@ -224,7 +224,11 @@
   (setq mweb-filename-extensions '("htm" "html" "phtml"))
   (multi-web-global-mode 1))
 
-
+(use-package cc-mode
+  :ensure
+  :custom
+  (c-basic-offset 4)
+  (c-label-minimum-indentation 0))
 
 
 ;; Rust setup
