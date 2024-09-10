@@ -231,6 +231,9 @@
   (c-label-minimum-indentation 0))
 
 
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+
 ;; Rust setup
 (use-package rustic
   :ensure
