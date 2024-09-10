@@ -6,19 +6,23 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ ;;'(menu-bar-mode nil)
  '(package-selected-packages
-   '(ewal-spacemacs-themes ewal which-key rainbow-delimiters elpy blacken company-web web-beautify company-web-slim company-web-jade company-web-html multi-web-mode lsp-ivy python-mode markdown-preview-eww markdown-mode magit counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode kanagawa-theme autothemer))
- '(tool-bar-mode nil)
- '(menu-bar-mode nil))
+   '(company-coq proof-general ewal-spacemacs-themes ewal which-key rainbow-delimiters elpy blacken company-web web-beautify company-web-slim company-web-jade company-web-html multi-web-mode lsp-ivy python-mode markdown-preview-eww markdown-mode magit counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode autothemer))
+ ;;'(tool-bar-mode nil)
+ )
 
 ;; set backups to .emacs.d folder
-(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-  backup-by-copying t    ; Don't delink hardlinks
-  version-control t      ; Use version numbers on backups
-  delete-old-versions t  ; Automatically delete excess backups
-  kept-new-versions 20   ; how many of the newest versions to keep
-  kept-old-versions 5    ; and how many of the old
-  )
+;;(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+;;  backup-by-copying t    ; Don't delink hardlinks
+;;  version-control t      ; Use version numbers on backups
+;;  delete-old-versions t  ; Automatically delete excess backups
+;;  kept-new-versions 20   ; how many of the newest versions to keep
+;;  kept-old-versions 5    ; and how many of the old
+;;  )
+(setq make-backup-files nil) ; stop creating backup files
+(setq create-lockfiles nil) ; stop creating lockfiles (those .# files)
+
 (setq inhibit-startup-message t)
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -28,9 +32,25 @@
 	       eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(set-frame-parameter nil 'alpha-background 70)
+(set-frame-parameter nil 'alpha-background 80)
 
 (add-to-list 'default-frame-alist '(alpha-background . 70))
+
+;; keep the cursor centered to avoid sudden scroll jumps
+(require 'centered-cursor-mode)
+
+;; disable in terminal modes
+;; http://stackoverflow.com/a/6849467/519736
+;; also disable in Info mode, because it breaks going back with the backspace key
+(define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
+  (lambda ()
+    (when (not (memq major-mode
+                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
+      (centered-cursor-mode))))
+(my-global-centered-cursor-mode 1)
+
+(use-package autothemer
+  :ensure)
 
 (use-package ewal
   :init (setq ewal-use-built-in-always-p nil
@@ -61,17 +81,6 @@
   (which-key-mode +1)
   (setq which-key-idle-delay 1)
   (setq which-key-popup-type 'minibuffer))
-
-(use-package rust-mode
-  :ensure)
-(use-package autothemer
-  :ensure)
-
-(use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode))
-  :init (setq markdown-command "/usr/bin/multimarkdown"))
 
 (use-package counsel
   :ensure
@@ -115,6 +124,9 @@
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-doc-enable nil))
+
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 
 
 ;; Company setup
@@ -169,6 +181,16 @@
 
 ;; flycheck
 (use-package flycheck :ensure)
+
+(use-package rust-mode
+  :ensure)
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode))
+  :init (setq markdown-command "/usr/bin/multimarkdown"))
+
 
 ;; Rust setup
 (use-package rustic
@@ -298,3 +320,12 @@
   (if (display-graphic-p)
       (message "suspend-frame disabled for graphical displays.")
     (suspend-frame)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(use-package company-coq
+  :hook (coq-mode . company-coq-mode))
