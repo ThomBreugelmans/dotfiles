@@ -9,7 +9,7 @@
  ;;'(menu-bar-mode nil)
  '(package-selected-packages
    '(company-coq proof-general ewal-spacemacs-themes ewal which-key rainbow-delimiters elpy blacken company-web web-beautify company-web-slim company-web-jade company-web-html multi-web-mode lsp-ivy python-mode markdown-preview-eww markdown-mode magit counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode autothemer))
- ;;'(tool-bar-mode nil)
+ '(tool-bar-mode nil)
  )
 
 ;; set backups to .emacs.d folder
@@ -37,7 +37,8 @@
 (add-to-list 'default-frame-alist '(alpha-background . 70))
 
 ;; keep the cursor centered to avoid sudden scroll jumps
-(require 'centered-cursor-mode)
+(require 'centered-cursor-mode
+   :ensure)
 
 ;; disable in terminal modes
 ;; http://stackoverflow.com/a/6849467/519736
@@ -90,30 +91,52 @@
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) "))
 
-;; LSP setup
-(use-package lsp-ivy
+(use-package projectile
+  :ensure
+  :init
+  (projectile-mode +1)
+  (setq projectile-project-search-path '("~/work/"))
+  :bind (:map projectile-mode-map
+	      ("C-c p" . projectile-command-map)))
+
+(use-package magit
   :ensure)
 
+(use-package treemacs
+  :ensure)
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure)
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure)
 (use-package lsp-treemacs
+  :after (treemacs lsp-mode)
+  :ensure)
+(lsp-treemacs-sync-mode 1)
+(treemacs-start-on-boot)
+
+;; LSP setup
+(use-package lsp-ivy
   :ensure)
 
 (use-package lsp-mode
   :ensure
   :commands lsp
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-treemacs-symbols)
+              ("M-?" . lsp-treemacs-references)
+	      ("M-!" . lsp-treemacs-implementations)
+              ("C-c C-c l" . flycheck-list-errors)
+	      ("C-c C-c t" . lsp-inlay-hints-mode)
+	      ("C-c C-c S" . lsp-ivy-workspace-symbol))
+  :init
+  (setq lsp-keymap-prefix "C-c C-l"))
   :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.3)
   ;; enable / disable the hints as you prefer:
   (lsp-inlay-hint-enable t)
-  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  (lsp-rust-analyzer-display-closure-return-type-hints t)
-  (lsp-rust-analyzer-display-parameter-hints nil)
-  (lsp-rust-analyzer-display-reborrow-hints nil)
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
@@ -189,29 +212,39 @@
   :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode))
-  :init (setq markdown-command "/usr/bin/multimarkdown"))
+:init (setq markdown-command "/usr/bin/multimarkdown"))
+
+(use-package multi-web-mode
+  :ensure
+  :config
+  (setq mweb-default-major-mode 'html-mode)
+  (setq mweb-tags
+	'((js-mode "<script[^>]*>" "</script>")
+	  (css-mode "<style[^>]*>" "</style>")))
+  (setq mweb-filename-extensions '("htm" "html" "phtml"))
+  (multi-web-global-mode 1))
+
+
 
 
 ;; Rust setup
 (use-package rustic
   :ensure
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-treemacs-symbols)
-              ("M-?" . lsp-treemacs-references)
-	      ("M-!" . lsp-treemacs-implementations)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status)
-	      ("C-c C-c t" . lsp-inlay-hints-mode)
-	      ("C-c C-c S" . lsp-ivy-workspace-symbol))
   :config
   ;; uncomment for less flashiness
   ;; (setq lsp-eldoc-hook nil)
   ;; (setq lsp-enable-symbol-highlighting nil)
   ;; (setq lsp-signature-auto-activate nil)
+
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)
 
   ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t)
@@ -244,57 +277,6 @@
 (use-package exec-path-from-shell
   :ensure
   :init (exec-path-from-shell-initialize))
-
-(use-package dap-mode
-  :ensure
-  :config
-  (dap-ui-mode)
-  (dap-ui-controls-mode 1)
-
-  (require 'dap-hydra)
-  (require 'dap-cpptools)
-  (require 'dap-gdb-lldb)
-  (setq dap-auto-configure-features '(sessions locals controls tooltip))
-  (setq dap-auto-configure-mode t)
-  
-  (dap-register-debug-template "Rust::CppTools Run Test"
-                             (list :type "cppdbg"
-                                   :request "launch"
-                                   :name "Rust::Run"
-				   :MIMode "gdb"
-				   :miDebuggerPath "rust-gdb"
-				   :environment []
-				   :program "${workspaceFolder}/target/debug/binary"
-				   :cwd "${workspaceFolder}"
-				   :args "--test"
-				   :console "external"
-                                   :dap-compilation "cargo build"
-				   :dap-compilation-dir "${workspaceFolder}"))
-  (setq dap-default-terminal-kind "integrated")
-
-)
-
-(use-package projectile
-  :ensure
-  :init
-  (projectile-mode +1)
-  (setq projectile-project-search-path '("~/work/"))
-  :bind (:map projectile-mode-map
-	      ("C-c p" . projectile-command-map)))
-
-(use-package magit
-  :ensure)
-
-;; setting up multi web mode
-(use-package multi-web-mode
-  :ensure
-  :config
-  (setq mweb-default-major-mode 'html-mode)
-  (setq mweb-tags
-	'((js-mode "<script[^>]*>" "</script>")
-	  (css-mode "<style[^>]*>" "</style>")))
-  (setq mweb-filename-extensions '("htm" "html" "phtml"))
-  (multi-web-global-mode 1))
 
 (use-package company-web
   :ensure)
