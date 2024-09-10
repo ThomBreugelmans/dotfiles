@@ -37,7 +37,7 @@
 (add-to-list 'default-frame-alist '(alpha-background . 70))
 
 ;; keep the cursor centered to avoid sudden scroll jumps
-(require 'centered-cursor-mode
+(use-package centered-cursor-mode
    :ensure)
 
 ;; disable in terminal modes
@@ -114,7 +114,6 @@
   :after (treemacs lsp-mode)
   :ensure)
 (lsp-treemacs-sync-mode 1)
-(treemacs-start-on-boot)
 
 ;; LSP setup
 (use-package lsp-ivy
@@ -123,7 +122,7 @@
 (use-package lsp-mode
   :ensure
   :commands lsp
-  :bind (:map rustic-mode-map
+  :bind (:map lsp-mode-map
               ("M-j" . lsp-treemacs-symbols)
               ("M-?" . lsp-treemacs-references)
 	      ("M-!" . lsp-treemacs-implementations)
@@ -131,14 +130,31 @@
 	      ("C-c C-c t" . lsp-inlay-hints-mode)
 	      ("C-c C-c S" . lsp-ivy-workspace-symbol))
   :init
-  (setq lsp-keymap-prefix "C-c C-l"))
+  (setq lsp-keymap-prefix "C-c C-l")
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   :custom
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.3)
   ;; enable / disable the hints as you prefer:
   (lsp-inlay-hint-enable t)
-  :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+  ;; RUST CONFIG
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)
+  )
 
 (use-package lsp-ui
   :ensure
@@ -236,23 +252,9 @@
 
 ;; Rust setup
 (use-package rustic
+  :after (rust-mode lsp-mode)
   :ensure
   :config
-  ;; uncomment for less flashiness
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-enable-symbol-highlighting nil)
-  ;; (setq lsp-signature-auto-activate nil)
-
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  (lsp-rust-analyzer-display-closure-return-type-hints t)
-  (lsp-rust-analyzer-display-parameter-hints nil)
-  (lsp-rust-analyzer-display-reborrow-hints nil)
-
   ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t)
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
