@@ -24,7 +24,8 @@ __      _| | ___   __ _  ___  _   _| |_
 }
 
 window {
-	background: url("../../.cache/blurred_wallpaper.png");
+    /*background: url("../../.cache/blurred_wallpaper.png");*/
+    background-color: rgba(10,10,10,0.5);
 	background-size: cover;
 }
 
