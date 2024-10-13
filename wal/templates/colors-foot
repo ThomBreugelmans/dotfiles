@@ -2,7 +2,7 @@
 # Aero root theme
 
 [cursor]
-color={cursor.strip}
+color=36454f {cursor.strip}
 
 [colors]
 foreground={foreground.strip}
