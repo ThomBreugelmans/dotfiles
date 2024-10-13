@@ -8,8 +8,8 @@ echo "[INFO] Getting components for: ZSH"
 
 declare -A TO_INSTALL
 TO_INSTALL=(
-    ["pacman"]='zsh zoxide'
-    ["apt"]='zsh zoxide'
+    ["pacman"]='zsh zoxide pyenv'
+    ["apt"]='zsh zoxide pyenv'
 )
 
 # Add dependencies to package list
