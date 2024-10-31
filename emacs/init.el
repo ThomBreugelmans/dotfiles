@@ -6,11 +6,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;;'(menu-bar-mode nil)
+ '(column-number-mode t)
+ '(custom-safe-themes
+   '("f4ad3d576e2d622f45434b7503cc5fbdf98c3b3c1be3422c791c320fa4f3834a" "7fd8b914e340283c189980cd1883dbdef67080ad1a3a9cc3df864ca53bdc89cf" "7b22ada21974b47dff9eaadacd8742540d1ac90dcf6c589493e55010cd9b0c76" default))
+ '(global-display-line-numbers-mode t)
  '(package-selected-packages
-   '(company-coq proof-general ewal-spacemacs-themes ewal which-key rainbow-delimiters elpy blacken company-web web-beautify company-web-slim company-web-jade company-web-html multi-web-mode lsp-ivy python-mode markdown-preview-eww markdown-mode magit counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode autothemer))
- '(tool-bar-mode nil)
- )
+   '(flucui-themes glsl-mode flatui-dark-theme tide company-coq proof-general ewal-spacemacs-themes ewal which-key rainbow-delimiters elpy blacken company-web web-beautify company-web-slim company-web-jade company-web-html multi-web-mode lsp-ivy python-mode markdown-preview-eww markdown-mode magit counsel projectile dap-mode exec-path-from-shell rustic rust-mode lsp-mode))
+ '(tool-bar-mode nil))
 
 ;; set backups to .emacs.d folder
 ;;(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -50,8 +52,10 @@
       (centered-cursor-mode))))
 (my-global-centered-cursor-mode 1)
 
-(use-package autothemer
-  :ensure)
+;;(use-package autothemer
+;;  :ensure)
+(load-theme 'flucui-dark t)
+(auto-save-visited-mode 1)
 
 (use-package ewal
   :init (setq ewal-use-built-in-always-p nil
@@ -63,7 +67,7 @@
                 my:rice:font (font-spec
                               :family "FiraCode Nerd Font Mono"
                               :weight 'semi-bold
-                              :size 11.0))
+                              :size 9.0))
           (show-paren-mode +1)
           (global-hl-line-mode)
           (set-frame-font my:rice:font nil t)
@@ -129,8 +133,9 @@
               ("C-c C-c l" . flycheck-list-errors)
 	      ("C-c C-c t" . lsp-inlay-hints-mode)
 	      ("C-c C-c S" . lsp-ivy-workspace-symbol))
-  :init
-  (setq lsp-keymap-prefix "C-c C-l")
+  :bind-keymap ("C-c C-l" . lsp-command-map)
+;;  :init
+;;  (setq lsp-keymap-prefix "C-c C-l")
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   :custom
