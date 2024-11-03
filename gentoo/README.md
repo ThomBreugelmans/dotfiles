@@ -210,6 +210,7 @@ echo -e "127.0.0.1\t<hostname>.homenetwork <hostname> localhost" >> /etc/hosts
 #### packages
 - app-shells/zsh
 - app-shells/zsh-completions
+- app-shells/gentoo-zsh-completions
 ### chrony
 ### io-scheduler-udev-rules
 ### security
