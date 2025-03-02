@@ -1,21 +1,20 @@
-ZSH_TMUX_AUTOSTART=true
-
 # zsh configuration
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git ls tmux)
+plugins=(git git-prompt ls tmux)
+
+# tmux configuration
+ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_AUTOSTART_ONCE=true
+ZSH_TMUX_AUTOCONNECT=false
+ZSH_TMUX_UNICODE=true
 
 source $ZSH/oh-my-zsh.sh
-
-# user configuration
-export TERM="xterm-256color"
 
 # To initialize zoxide, add this to your configuration (usually ~/.zshrc):
 eval "$(zoxide init zsh)"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+bindkey -e
+zstyle :compinstall filename '/home/hannibal/.zshrc'
+autoload -Uz compinit promptinit
+compinit
+promptinit
