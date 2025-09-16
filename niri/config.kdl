@@ -131,13 +131,13 @@ window-rule {
 
 // Open the Firefox picture-in-picture player as floating by default.
 window-rule {
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id=r#"firefox"# title="^Picture-in-Picture$"
     open-floating true
 }
 
 // Have firefox at full size
 window-rule {
-    match app-id=r#"firefox$"#
+    match app-id=r#"^firefox"#
     default-column-width {
         proportion 1.0;
     }
