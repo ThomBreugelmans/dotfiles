@@ -91,8 +91,8 @@ enable_logging() {
 	fi
 	tmux set-option -gq "@session_logging:${session}" "true"
 	# Setup window and pane hooks for session
-	tmux set-hook after-split-window 'run-shell "$XDG_CONFIG_HOME/tmux/scripts/logging.sh current_pane"'
-	tmux set-hook after-new-window 'run-shell "$XDG_CONFIG_HOME/tmux/scripts/logging.sh current_pane"'
+	tmux set-hook -t $session after-split-window 'run-shell "$XDG_CONFIG_HOME/tmux/scripts/logging.sh current_pane"'
+	tmux set-hook -t $session after-new-window 'run-shell "$XDG_CONFIG_HOME/tmux/scripts/logging.sh current_pane"'
 	# For all existing panes, enable pipe-pane
 	for window in $(get_windows $session); do
 		for pane in $(get_panes $session $window); do
@@ -108,8 +108,8 @@ disable_logging() {
 		return;
 	fi
 	# Unhook new window and panes
-	tmux set-hook -u after-split-window
-	tmux set-hook -u after-new-window
+	tmux set-hook -t $session -u after-split-window
+	tmux set-hook -t $session -u after-new-window
 	# For all panes, stop logging
 	for window in $(get_windows $session); do
 		for pane in $(get_panes $session $window); do
