@@ -19,6 +19,9 @@ fi
 if command -v apt &> /dev/null; then
     INSTALL_COMMAND="$(which apt) install"
 fi
+if command -v emerge &> /dev/null; then
+    INSTALL_COMMAND="$(which emerge) -tv"
+fi
 
 if [[ $INSTALL_COMMAND == "" ]]; then
     echo "[!] Could not detect package manager, exiting..."
