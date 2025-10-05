@@ -8,8 +8,9 @@ echo "[INFO] Getting components for: Tmux"
 
 declare -A TO_INSTALL
 TO_INSTALL=(
-    ["pacman"]='tmux'
-    ["apt"]='tmux'
+    ["pacman"]='tmux ansifilter'
+    ["apt"]='tmux ansifilter'
+    ["emerge"]='tmux ansifilter'
 )
 
 # Add dependencies to package list
@@ -22,6 +23,8 @@ for key in "${!TO_INSTALL[@]}"; do
 done
 
 if [[ $CONFIGURE == "true" ]]; then
+    # just in case:
+    chmod +x $DIR/tmux/scripts/logging.sh
     # Copy configs over
     cp -r $DIR/tmux ~/.config/
 fi
