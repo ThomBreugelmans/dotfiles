@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+## Logfiles are separated as follows:
+# - Log Dir
+# - Session
+# - Date
+# - Filename (datetime-session-window-pane)
 LOG_DIR="$HOME/.tmux/logs"
 
 ## Returns the current session's identifier
@@ -53,10 +58,10 @@ start_log() {
 	# test if log directory exists, if not create it
 	local date="$(date +"%Y-%m-%d")"
 	local t="$(date +"%T")"
-	if [ ! -d "$LOG_DIR/$date" ]; then mkdir --parents "$LOG_DIR/$date"; fi
+	if [ ! -d "$LOG_DIR/$1/$date" ]; then mkdir --parents "$LOG_DIR/$1/$date"; fi
 	local target="$1:$2.$3"
 	local UNIQUE_ID="$(get_pane_unique_id $1 $2 $3)"
-	local LOG_FILE="$LOG_DIR/$date/${date}T${t}-${UNIQUE_ID}.log"
+	local LOG_FILE="$LOG_DIR/$1/$date/${date}T${t}-${UNIQUE_ID}.log"
 	tmux pipe-pane -t "${target}" "exec cat - | tee -a ${LOG_FILE}"
 }
 
