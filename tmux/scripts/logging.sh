@@ -61,7 +61,7 @@ start_log() {
 	if [ ! -d "$LOG_DIR/$1/$date" ]; then mkdir --parents "$LOG_DIR/$1/$date"; fi
 	local target="$1:$2.$3"
 	local UNIQUE_ID="$(get_pane_unique_id $1 $2 $3)"
-	local LOG_FILE="$LOG_DIR/$1/$date/${date}T${t}-${UNIQUE_ID}.log"
+	local LOG_FILE="$LOG_DIR/$1/$date/${UNIQUE_ID}-${date}T${t}.log"
 	tmux pipe-pane -t "${target}" "exec cat - | tee -a ${LOG_FILE}"
 }
 
