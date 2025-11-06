@@ -15,16 +15,30 @@ input {
     mod-key-nested "Super"
 }
 
-output "HDMI-A-1" {
-    position x=0 y=0
-}
-
 output "eDP-1" {
     scale 1.5
     transform "normal"
-    position x=0 y=1440
+    position x=720 y=1440
     focus-at-startup
-    variable-refresh-rate
+    variable-refresh-rate on-demand=true
+
+}
+
+output "Microstep MSI MAG342CQR DB6H263601009" {
+    position x=0 y=0
+    variable-refresh-rate on-demand=true
+
+}
+
+output "DP-8" {
+    position x=720 y=360
+    variable-refresh-rate on-demand=true
+}
+
+output "HDMI-A-1" {
+    position x=720 y=360
+    variable-refresh-rate on-demand=true
+
 }
 
 layout {
@@ -93,6 +107,7 @@ hotkey-overlay {
 }
 
 overview {
+    zoom 0.4
     backdrop-color "#674846"
 }
 
@@ -136,7 +151,8 @@ window-rule {
 
 // Open the Firefox picture-in-picture player as floating by default.
 window-rule {
-    match app-id=r#"firefox"# title="^Picture-in-Picture$"
+    match app-id="firefox" title="^Picture-in-Picture$"
+    match app-id="firefox" title="Geef je gebruikersnaam en wachtwoord"
     open-floating true
 }
 
@@ -327,15 +343,15 @@ binds {
     //
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
-    Super+1 { focus-workspace 1; }
-    Super+2 { focus-workspace 2; }
+    Super+1 { focus-workspace 2; }
+    Super+2 { focus-workspace 3; }
     Super+3 { focus-workspace 3; }
-    Super+4 { focus-workspace 4; }
-    Super+5 { focus-workspace 5; }
-    Super+6 { focus-workspace 6; }
-    Super+7 { focus-workspace 7; }
-    Super+8 { focus-workspace 8; }
-    Super+9 { focus-workspace 9; }
+    Super+4 { focus-workspace 5; }
+    Super+5 { focus-workspace 6; }
+    Super+6 { focus-workspace 7; }
+    Super+7 { focus-workspace 8; }
+    Super+8 { focus-workspace 9; }
+    Super+9 { focus-workspace 10; }
     Super+Ctrl+1 { move-column-to-workspace 1; }
     Super+Ctrl+2 { move-column-to-workspace 2; }
     Super+Ctrl+3 { move-column-to-workspace 3; }
@@ -373,12 +389,12 @@ binds {
 
     // Expand the focused column to space not taken up by other fully visible columns.
     // Makes the column "fill the rest of the space".
-    Super+Ctrl+F { expand-column-to-available-width; }
+    Super+Ctrl+F hotkey-overlay-title="Expand column to fill available space" { expand-column-to-available-width; }
 
     Super+C { center-column; }
 
     // Center all fully visible columns on screen.
-    Super+Ctrl+C { center-visible-columns; }
+    Super+Ctrl+C hotkey-overlay-title="Center visible columns" { center-visible-columns; }
 
     // Finer width adjustments.
     // This command can also:
@@ -396,13 +412,13 @@ binds {
     Super+Shift+Equal { set-window-height "+10%"; }
 
     // Move the focused window between the floating and the tiling layout.
-    Super+V       { toggle-window-floating; }
-    Super+Shift+V { switch-focus-between-floating-and-tiling; }
+    Super+V       hotkey-overlay-title="Toggle floating" { toggle-window-floating; }
+    Super+Shift+V hotkey-overlay-title="Switch focus floating and tiling" { switch-focus-between-floating-and-tiling; }
 
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
     // rather than stacked on top of each other.
-    Super+W { toggle-column-tabbed-display; }
+    Super+W hotkey-overlay-title="Toggle tabbed display" { toggle-column-tabbed-display; }
 
     // Actions to switch layouts.
     // Note: if you uncomment these, make sure you do NOT have
@@ -415,7 +431,7 @@ binds {
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
-    Super+Shift+S { spawn "hyprshot" "-m" "region" "--clipboard-only"; }
+    Super+Shift+S { spawn-sh "grim -g \"$(slurp)\" - | wl-copy"; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
