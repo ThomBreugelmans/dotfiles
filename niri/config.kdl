@@ -2,7 +2,9 @@ input {
     keyboard {
         xkb {
             layout "us"
+	    options "compose:ralt"
         }
+        track-layout "global"
     }
 
     touchpad {
@@ -30,7 +32,11 @@ output "Microstep MSI MAG342CQR DB6H263601009" {
 
 }
 
-output "DP-8" {
+output "Dell Inc. DELL P2419H 22TQ543" {
+    position x=720 y=360
+    variable-refresh-rate on-demand=true
+}
+output "Dell Inc. DELL P2422H 2CYK8L3" {
     position x=720 y=360
     variable-refresh-rate on-demand=true
 }
@@ -204,6 +210,8 @@ environment {
     MOZ_ENABLE_WAYLAND "1"
     MOZ_DBUS_REMOTE "1"
     ELECTRON_OZONE_PLATFORM_HINT "wayland"
+    // Needed for xwayland-satellite to run Java apps:
+    _JAVA_AWT_WM_NONREPARENTING "1"
 }
 
 binds {
